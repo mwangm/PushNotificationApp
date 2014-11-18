@@ -17,17 +17,15 @@ class ViewController: UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "TestShape:", name: "actionOne", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"TestMessage:", name: "actionTwo", object: nil)
         
-        
-        var dateComp: NSDateComponents  = NSDateComponents()
-        dateComp.year = 2014
-        dateComp.month = 11
-        dateComp.day = 18
-        dateComp.hour = 16
-        dateComp.minute = 16
-        dateComp.timeZone = NSTimeZone.systemTimeZone()
-        
-        var calendar: NSCalendar = NSCalendar(calendarIdentifier: NSGregorianCalendar)!
-        var date: NSDate = calendar.dateFromComponents(dateComp)!
+        let datenow = NSDate()
+        // This is a point in time, independent of calendars
+        let calendar = NSCalendar.currentCalendar()
+        // System calendar, likely Gregorian
+        let components = calendar.components(NSCalendarUnit(UInt.max), fromDate: datenow)
+        // Gregorian components
+        components.minute += 1
+
+        var date: NSDate = calendar.dateFromComponents(components)!
         
         var notification: UILocalNotification = UILocalNotification()
         notification.category = "FIRST_CATEGORY";
