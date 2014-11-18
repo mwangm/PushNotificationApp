@@ -14,10 +14,64 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool{
+        var firstAction: UIMutableUserNotificationAction = UIMutableUserNotificationAction();
+        firstAction.identifier = "FIRST_ACTION";
+        firstAction.title = "First Action";
+        firstAction.activationMode = UIUserNotificationActivationMode.Background;
+        firstAction.destructive = true;
+        firstAction.authenticationRequired = false;
+        
+        var secondAction:UIMutableUserNotificationAction = UIMutableUserNotificationAction()
+        secondAction.identifier = "SECOND_ACTION";
+        secondAction.title = "Second Action";
+        secondAction.activationMode = UIUserNotificationActivationMode.Foreground;
+        secondAction.destructive = false;
+        secondAction.authenticationRequired = false;
+        
+        
+        
+        var thirdAction:UIMutableUserNotificationAction = UIMutableUserNotificationAction()
+        thirdAction.identifier = "THIRD_ACTION";
+        thirdAction.title = "Third Action";
+        thirdAction.activationMode = UIUserNotificationActivationMode.Background;
+        thirdAction.destructive = false;
+        thirdAction.authenticationRequired = false;
+        
+        var firstCategory: UIMutableUserNotificationCategory = UIMutableUserNotificationCategory()
+        firstCategory.identifier = "FIRST_CATEGORY";
+        let defaultActions:NSArray = [firstAction, secondAction, thirdAction];
+        let minimalActions:NSArray = [firstAction, secondAction];
+        firstCategory.setActions(defaultActions, forContext: UIUserNotificationActionContext.Default);
+        firstCategory.setActions(minimalActions, forContext: UIUserNotificationActionContext.Minimal);
+        
+        let categories: NSSet = NSSet(objects: firstCategory)
+        let types:UIUserNotificationType = UIUserNotificationType.Alert | UIUserNotificationType.Badge
+        let mySettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: types, categories: categories);
+        UIApplication.sharedApplication().registerUserNotificationSettings(mySettings)
+        
         return true
+        
     }
+    
+    func application(application: UIApplication!, handleActionWithIdentifier identifier: String!, forLocalNotification notification: UILocalNotification!, completionHandler: (() -> Void)!) {
+        
+        if identifier == "FIRST_ACTION" {
+            println("this is first action")
+            NSNotificationCenter.defaultCenter().postNotificationName("actionOne", object: nil)
+            
+        }else if identifier == "SECOND_ACTION" {
+            println("this is second action")
+            NSNotificationCenter.defaultCenter().postNotificationName("actionTwo", object: nil)
+            
+        }
+        
+        completionHandler()
+        
+    }
+    
+
+
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
