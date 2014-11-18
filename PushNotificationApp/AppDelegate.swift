@@ -49,6 +49,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let types:UIUserNotificationType = UIUserNotificationType.Alert | UIUserNotificationType.Badge
         let mySettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: types, categories: categories);
         UIApplication.sharedApplication().registerUserNotificationSettings(mySettings)
+        println("register remote notification")
+        UIApplication.sharedApplication().registerForRemoteNotifications()
         
         return true
         
@@ -68,6 +70,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         completionHandler()
         
+    }
+    
+    func application(application: UIApplication,
+        didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+            println("device token: \(deviceToken)")
+    }
+    
+    func application(application: UIApplication,
+        didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+          println("error: \(error)")
     }
     
 
