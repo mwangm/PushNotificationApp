@@ -23,7 +23,7 @@ class ViewController: UIViewController {
         // System calendar, likely Gregorian
         let components = calendar.components(NSCalendarUnit(UInt.max), fromDate: datenow)
         // Gregorian components
-        components.minute += 1
+        components.second += 30
 
         var date: NSDate = calendar.dateFromComponents(components)!
         
