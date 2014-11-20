@@ -16,29 +16,25 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "TestShape:", name: "actionOne", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"TestMessage:", name: "actionTwo", object: nil)
-        
+
         let datenow = NSDate()
-        // This is a point in time, independent of calendars
         let calendar = NSCalendar.currentCalendar()
-        // System calendar, likely Gregorian
         let components = calendar.components(NSCalendarUnit(UInt.max), fromDate: datenow)
-        // Gregorian components
-        components.second += 30
+        components.second += 20
 
         var date: NSDate = calendar.dateFromComponents(components)!
         
         var notification: UILocalNotification = UILocalNotification()
-        notification.category = "FIRST_CATEGORY";
+        notification.category = "MESSAGE";
         notification.alertBody = "This is a notification"
         notification.fireDate = date
         
-        UIApplication.sharedApplication().scheduleLocalNotification(notification)
+        //UIApplication.sharedApplication().scheduleLocalNotification(notification)
 
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     
@@ -52,7 +48,8 @@ class ViewController: UIViewController {
     }
     
     func TestMessage(notification: NSNotification) {
-        println("**********exec message***********")
+        println("**********show message***********")
+        println(notification.object)
 
         var message: UIAlertController = UIAlertController(title: "Notification Message", message: "Hello, this is an alert essage", preferredStyle: UIAlertControllerStyle.Alert)
         message.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))

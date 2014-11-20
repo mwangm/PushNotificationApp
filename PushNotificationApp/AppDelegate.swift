@@ -30,26 +30,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         secondAction.authenticationRequired = false;
         
         
-        
-        var thirdAction:UIMutableUserNotificationAction = UIMutableUserNotificationAction()
-        thirdAction.identifier = "THIRD_ACTION";
-        thirdAction.title = "Third Action";
-        thirdAction.activationMode = UIUserNotificationActivationMode.Background;
-        thirdAction.destructive = false;
-        thirdAction.authenticationRequired = false;
-        
         var firstCategory: UIMutableUserNotificationCategory = UIMutableUserNotificationCategory()
-        firstCategory.identifier = "FIRST_CATEGORY";
-        let defaultActions:NSArray = [firstAction, secondAction, thirdAction];
-        let minimalActions:NSArray = [firstAction, secondAction];
+        firstCategory.identifier = "MESSAGE";
+        let defaultActions:NSArray = [firstAction, secondAction];
         firstCategory.setActions(defaultActions, forContext: UIUserNotificationActionContext.Default);
-        firstCategory.setActions(minimalActions, forContext: UIUserNotificationActionContext.Minimal);
         
         let categories: NSSet = NSSet(objects: firstCategory)
         let types:UIUserNotificationType = UIUserNotificationType.Alert | UIUserNotificationType.Badge
         let mySettings: UIUserNotificationSettings = UIUserNotificationSettings(forTypes: types, categories: categories);
+        
         UIApplication.sharedApplication().registerUserNotificationSettings(mySettings)
-        println("register remote notification")
         UIApplication.sharedApplication().registerForRemoteNotifications()
         
         return true
@@ -57,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication!, handleActionWithIdentifier identifier: String!, forLocalNotification notification: UILocalNotification!, completionHandler: (() -> Void)!) {
+        println("---enter local notification handler----")
         
         if identifier == "FIRST_ACTION" {
             println("this is first action")
@@ -70,6 +61,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         completionHandler()
         
+    }
+    
+    func application(application: UIApplication, handleActionWithIdentifier identifier: String!, forRemoteNotification userInfo: [NSObject : AnyObject]!,
+        completionHandler: (() -> Void)!) {
+        println("---enter remote notification handler----")
+        println(userInfo)
+
+        NSNotificationCenter.defaultCenter().postNotificationName("actionTwo", object: userInfo)
+        completionHandler()
     }
     
     func application(application: UIApplication,
